@@ -66,6 +66,8 @@ src/
 │       │   ├── [slug]/
 │       │   │   └── route.ts    # GET: Get blog by slug
 │       │   └── route.ts        # GET: List blogs
+│       ├── upload/
+│       │   └── route.ts        # POST: Upload image to Cloudinary (protected)
 │       └── health/
 │           └── route.ts        # GET: Health check
 ├── components/
@@ -89,6 +91,7 @@ src/
 ├── lib/
 │   ├── db.ts                   # MongoDB connection singleton
 │   ├── blog.ts                 # Server-side blog data functions
+│   ├── cloudinary.ts           # Cloudinary configuration
 │   ├── utils.ts                # Utility functions (slug, dates, etc.)
 │   ├── cn.ts                   # Class merging utility
 │   ├── validations.ts          # Zod schemas
@@ -135,6 +138,11 @@ ADMIN_API_KEY=your-secret-api-key-here
 
 # Your production URL
 NEXT_PUBLIC_SITE_URL=https://blog.rolplay.ai
+
+# Cloudinary Configuration (get from Cloudinary Dashboard > Settings > API Keys)
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
 ```
 
 ### 3. MongoDB Atlas Setup
@@ -238,6 +246,39 @@ GET /api/blogs/{slug}
 GET /api/health
 ```
 
+### Upload Image
+
+Upload images to Cloudinary for use in blog posts.
+
+```http
+POST /api/upload
+Content-Type: multipart/form-data
+x-api-key: YOUR_API_KEY
+
+Form Data:
+  file: <image-file>
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "url": "https://res.cloudinary.com/your-cloud/image/upload/v1234567890/blog-images/filename.jpg",
+    "publicId": "blog-images/filename"
+  }
+}
+```
+
+**cURL Example:**
+
+```bash
+curl -X POST https://blog.rolplay.ai/api/upload \
+  -H "x-api-key: $ADMIN_API_KEY" \
+  -F "file=@/path/to/image.jpg"
+```
+
 ## Cron Job Integration
 
 Your external AI worker can publish articles like this:
@@ -275,6 +316,9 @@ curl -X POST https://blog.rolplay.ai/api/blogs/create \
 | `MONGODB_URI` | MongoDB Atlas connection string |
 | `ADMIN_API_KEY` | Secret key for API authentication |
 | `NEXT_PUBLIC_SITE_URL` | Your production URL |
+| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name |
+| `CLOUDINARY_API_KEY` | Cloudinary API key |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret |
 
 ## Multilingual Support (Future)
 
