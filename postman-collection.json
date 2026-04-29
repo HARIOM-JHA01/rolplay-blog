@@ -1,0 +1,147 @@
+{
+  "info": {
+    "name": "Rolplay AI Blog API",
+    "description": "API collection for the Rolplay AI Blog platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "api_key",
+      "value": "your-secret-api-key-here",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/health",
+          "host": ["{{base_url}}"],
+          "path": ["api", "health"]
+        },
+        "description": "Check if the API and database are healthy"
+      }
+    },
+    {
+      "name": "Create Blog Post",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{api_key}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"The Future of AI in 2026\",\n  \"summary\": \"A comprehensive analysis of artificial intelligence trends, breakthroughs, and market impact in 2026.\",\n  \"content\": \"<h2>Introduction</h2><p>Artificial intelligence continues to evolve at an unprecedented pace. This report examines the key trends shaping the industry.</p><h2>Key Trends</h2><ul><li>Large language models becoming more efficient</li><li>AI agents for autonomous task completion</li><li>Multimodal AI systems</li></ul><h2>Conclusion</h2><p>The AI landscape in 2026 presents both opportunities and challenges for businesses and consumers alike.</p>\",\n  \"coverImage\": \"https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop\",\n  \"tags\": [\"AI\", \"Technology\", \"2026\"],\n  \"source\": \"Rolplay AI Research\",\n  \"published\": true\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/blogs/create",
+          "host": ["{{base_url}}"],
+          "path": ["api", "blogs", "create"]
+        },
+        "description": "Create a new blog post. Requires x-api-key header for authentication."
+      }
+    },
+    {
+      "name": "List Blog Posts",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/blogs?page=1&limit=10",
+          "host": ["{{base_url}}"],
+          "path": ["api", "blogs"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Page number (default: 1)"
+            },
+            {
+              "key": "limit",
+              "value": "10",
+              "description": "Items per page (default: 12, max: 100)"
+            },
+            {
+              "key": "search",
+              "value": "",
+              "description": "Search query (optional)"
+            },
+            {
+              "key": "tags",
+              "value": "AI",
+              "description": "Filter by tags, comma-separated (optional)"
+            }
+          ]
+        },
+        "description": "Get a paginated list of published blog posts"
+      }
+    },
+    {
+      "name": "Get Blog Post by Slug",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/blogs/the-future-of-ai-in-2026",
+          "host": ["{{base_url}}"],
+          "path": ["api", "blogs", "the-future-of-ai-in-2026"]
+        },
+        "description": "Get a single blog post by its slug. Increments the view counter."
+      }
+    },
+    {
+      "name": "RSS Feed",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/rss",
+          "host": ["{{base_url}}"],
+          "path": ["rss"]
+        },
+        "description": "Get the RSS feed for the blog"
+      }
+    },
+    {
+      "name": "Sitemap",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/sitemap.xml",
+          "host": ["{{base_url}}"],
+          "path": ["sitemap.xml"]
+        },
+        "description": "Get the XML sitemap"
+      }
+    },
+    {
+      "name": "Robots.txt",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/robots.txt",
+          "host": ["{{base_url}}"],
+          "path": ["robots.txt"]
+        },
+        "description": "Get the robots.txt file"
+      }
+    }
+  ]
+}
