@@ -45,7 +45,7 @@ export function Header() {
             alt={siteConfig.name}
             width={120}
             height={32}
-            className="h-8 w-auto object-contain"
+            className="h-8 w-auto object-contain [.dark_&]:[filter:invert(1)_hue-rotate(180deg)]"
             priority
           />
         </Link>

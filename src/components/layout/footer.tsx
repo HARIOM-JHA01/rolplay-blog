@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { siteConfig, footerLinks } from '@/lib/constants';
 
 export function Footer() {
@@ -9,8 +10,14 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="text-lg font-bold">
-              {siteConfig.name}
+            <Link href="/" className="inline-block">
+              <Image
+                src="/rolplay-logo.png"
+                alt={siteConfig.name}
+                width={100}
+                height={26}
+                className="h-7 w-auto object-contain [.dark_&]:[filter:invert(1)_hue-rotate(180deg)]"
+              />
             </Link>
             <p className="mt-2 text-sm text-muted-foreground">
               {siteConfig.description}
