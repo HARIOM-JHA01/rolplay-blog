@@ -1,11 +1,36 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useTheme } from 'next-themes';
 import { siteConfig, navLinks } from '@/lib/constants';
 import { cn } from '@/lib/cn';
-import { Menu, X, Rss } from 'lucide-react';
-import { useState } from 'react';
+import { Menu, X, Rss, Sun, Moon } from 'lucide-react';
+import { useState, useEffect } from 'react';
+
+function ThemeToggle() {
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return <div className="h-9 w-9" />;
+
+  return (
+    <button
+      onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+      className="p-2 rounded-md text-foreground/60 hover:text-foreground hover:bg-accent transition-colors"
+      aria-label="Toggle theme"
+    >
+      {resolvedTheme === 'dark' ? (
+        <Sun className="h-4 w-4" />
+      ) : (
+        <Moon className="h-4 w-4" />
+      )}
+    </button>
+  );
+}
 
 export function Header() {
   const pathname = usePathname();
@@ -15,7 +40,14 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center space-x-2">
-          <span className="text-xl font-bold tracking-tight">{siteConfig.name}</span>
+          <Image
+            src="/rolplay-logo.png"
+            alt={siteConfig.name}
+            width={120}
+            height={32}
+            className="h-8 w-auto object-contain"
+            priority
+          />
         </Link>
 
         <nav className="hidden md:flex items-center space-x-6">
@@ -40,19 +72,23 @@ export function Header() {
           >
             <Rss className="h-4 w-4" />
           </Link>
+          <ThemeToggle />
         </nav>
 
-        <button
-          className="md:hidden p-2"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            className="p-2"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
+        </div>
       </div>
 
       {mobileMenuOpen && (
